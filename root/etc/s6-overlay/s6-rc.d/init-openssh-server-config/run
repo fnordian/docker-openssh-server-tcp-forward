@@ -66,6 +66,14 @@ else
     echo "User/password ssh access is disabled."
 fi
 
+if [[ "$TCP_FORWARD" == "true" ]]; then
+    echo tcp forward enabled
+    sed -i 's/^#AllowTcpForwarding no/AllowTcpForwarding yes/' /etc/ssh/sshd_config
+    sed -i 's/^AllowTcpForwarding no/AllowTcpForwarding yes/' /etc/ssh/sshd_config
+else
+    echo tcp forward disabled
+fi
+
 # set umask for sftp
 UMASK=${UMASK:-022}
 sed -i "s|/usr/lib/ssh/sftp-server$|/usr/lib/ssh/sftp-server -u ${UMASK}|g" /etc/ssh/sshd_config
